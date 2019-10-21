@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+
+    {{database}} {{training}} {{alg}} {{image}} {{norm}}
+
+    <div class="container" style="margin-top:5%">
+        <div class="row">
+
+            <div class="col-md-3">
+                <form action="/settings/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %} {{ form }}
+                    <div class="card">
+
+                        <div class="card-body ">
+                            <div class="form-group">
+                                <label for="database">Database:</label>
+                                <select class="form-control" id="database" name="database">
+                                              <option value="orl">ORL</option>
+                                              
+                                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="training">Number of pictures:</label>
+                                <select class="form-control" id="training" name="training">
+                                        <option value="6">60% training, 40% testing </option>
+                                        <option value="8">80% training, 20% testing </option>
+                                        <option value="9">90% training, 10% testing </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="alg">Algorithm:</label>
+                                <select class="form-control" id="alg" name="alg">
+                                                  <option value="NN">NN</option>
+    
+                                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="norm">Norm:</label>
+                                <select class="form-control" id="norm" name="norm">
+                                                          <option>1</option>
+                                                          <option>2</option>
+                                                          <option>Infinit</option>
+                                                          <option>Cosinus</option>
+                                                         
+                                                        </select>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card mt-2">
+                        <div class="card-header">
+                            Image
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group">
+
+                                        <select class="form-control" id="folder" name="folder">
+                                                {% for i in listFolder %}
+                                                    <option value="s{{i}}">Pers. {{i}}</option>
+                                                {% endfor %}
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+
+                                        <select class="form-control" id="image" name="image">
+                                                {% for i in numberImage %}
+                                                <option value="{{i}}">{{i}}</option>
+                                            {% endfor %} 
+                                                            </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="mt-2">
+                        <button class="btn btn-default btn-block border-dark" type="submit"><i class="fa fa-search"></i> Search </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="col-md-9">
+                <div class="card ">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-md-6 text-center border-right">
+                                <h6>Selected picture:</h6>
+                                <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png" alt="" height="250px" id="preview">
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <h6>Result:</h6>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    $("#folder , #image").change(function() {
+        var folder = $("#folder").val();
+        var image = $("#image").val();
+
+
+    });
+</script>
+
+
+</html>
