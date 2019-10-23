@@ -38,9 +38,9 @@
                             <div class="form-group">
                                 <label for="training">Number of pictures:</label>
                                 <select class="form-control" id="training" name="training">
-                                        <option value="6">60% training, 40% testing </option>
-                                        <option value="8" selected>80% training, 20% testing </option>
-                                        <option value="9">90% training, 10% testing </option>
+                                        <option value="6"  {% if training == "6" %} selected {%endif%} >60% training, 40% testing </option>
+                                        <option value="8" {% if training == "8" %} selected {%endif%}>80% training, 20% testing </option>   
+                                        <option value="9" {% if training == "9" %} selected {%endif%}>90% training, 10% testing </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -88,14 +88,9 @@
                                     <div class="form-group">
 
                                         <select class="form-control" id="image" name="image">
-                                                {% for i in numberImage reversed %}
-                                                
-                                                    <option value="{{i}}" {% if forloop.revcounter == imageSel %} selected{%endif%}>{{i}}</option>
-                                                
-                                                        
-                                               
-                                            {% endfor %} 
-                                                            </select>
+                                                <option value="10">10</option>
+                                                <option value="9">9</option>
+                                        </select>
 
                                     </div>
                                 </div>
@@ -147,7 +142,12 @@
 
                     </div>
                 </div>
+                <div class="card mt-2">
+                    <div class="card-header">Statistics</div>
+                    <div class="card-body">
 
+                    </div>
+                </div>
 
 
             </div>
@@ -160,13 +160,26 @@
     $("#folder , #image").change(function() {
         var folder = $("#folder").val();
         var image = $("#image").val();
+    });
+</script>
 
+<script>
+    $("#training").change(function() {
+        $value = $("#training").val();
+        if ($value == 6) {
+            $('#image')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="10" selected>10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option>');
+        } else if ($value == 8) {
+            $('#image')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="10" selected>10</option><option value="9">9</option>');
+        }
 
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
-        var img = document.getElementById("scream");
-
-        ctx.drawImage(img, 10, 10);
 
     });
 </script>

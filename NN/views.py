@@ -12,6 +12,11 @@ import os
 def index(request):
     listFolder=[i for i in range(1,41)]
     numberImage=[i for i in range(1,11)]
+
+    im = Image.open( 'staticfiles/avatar1.jpg')
+    im.save("NN/static/file.jpg", "JPEG")
+    im.save("NN/static/gasita.jpg", "JPEG")
+
     return render(request, 'index.html', 
     {
         'listFolder': listFolder,
@@ -42,7 +47,8 @@ def settings(request):
             im = Image.open( 'staticfiles/s' + folder + '/' + image + '.pgm')
             im.save("NN/static/file.jpg", "JPEG")
             
-            poza =  imread('staticfiles/s' + folder + '/' + image + '.pgm')
+            inputPhoto =  imread('staticfiles/s' + folder + '/' + image + '.pgm')
+            
             # 
             A = np.zeros((10304,320))
 
@@ -60,28 +66,35 @@ def settings(request):
             distancesVector = np.zeros((1,nrPhotos))  # vector de distante
 
             cautat = np.zeros((10304,1))
-            cautat[:,0] = np.reshape(poza,10304,1)
+            cautat[:,0] = np.reshape(inputPhoto,10304,1)
             
 
             for i in range(0, int(nrPhotos)):
                 distancesVector[:,i] = linear.norm(cautat[:,0]-A[:,i],1)
          
 
-            PozaGasita = 0
+            positionPhoto = 0
             minDistancesVector = min(distancesVector[0,:])
 
             for i in range(0, np.size(distancesVector)):
                 if distancesVector[0,i] == minDistancesVector:
-                    PozaGasita = i+1
+                    positionPhoto = i+1
 
             pozaGasitaMatrix = np.zeros((112,92))
-            pozaGasitaMatrix = np.reshape(A[:,PozaGasita-1],(112,92))
+            pozaGasitaMatrix = np.reshape(A[:,positionPhoto-1],(112,92))
 
 
-            folderPozaGasita = int(PozaGasita/int(training))
+            folderPozaGasita = int(positionPhoto/int(training)) + 1
          
+            
 
-            im = Image.open( 'staticfiles/s' + str(folderPozaGasita+1) + '/' + str(PozaGasita%int(training)) + '.pgm')
+            PozaGasita = round(positionPhoto%int(training))
+
+            if (PozaGasita) == 1:
+                    PozaGasita = 1
+      
+                 
+            im = Image.open( 'staticfiles/s' + str(folderPozaGasita) + '/' + str(PozaGasita) + '.pgm')
             im.save("NN/static/gasita.jpg", "JPEG")
 
             return render(request, 'index.html', 
@@ -98,7 +111,7 @@ def settings(request):
                         'im':im,
                         'imageSel':imageSel,
                         'folderSel':folderSel,
-                        'a':folderPozaGasita+1
+                        'a':folderPozaGasita
                        #min(distancesVector[0,:]) - min 
                       
                     })
