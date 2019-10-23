@@ -6,3 +6,5 @@ class settingsForm(forms.Form):
     training = forms.CharField(max_length=100)
     alg = forms.CharField(max_length=100)
     norm = forms.CharField(max_length=100)
+    folder = forms.CharField(max_length=100)
+    image = forms.IntegerField()
