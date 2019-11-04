@@ -42,14 +42,11 @@ def settings(request):
             imageSel = int(image)
             folderSel = int(folder)
             
-
             #convert image for display in HTML
             im = Image.open( 'staticfiles/s' + folder + '/' + image + '.pgm')
             im.save("NN/static/file.jpg", "JPEG")
             
             inputPhoto =  imread('staticfiles/s' + folder + '/' + image + '.pgm')
-            
-            # 
             A = np.zeros((10304,320))
 
             k = 0
@@ -58,8 +55,6 @@ def settings(request):
                 for j in range(1, int(training)+1):
                     a = imread('staticfiles/s' + str(i) + '/' + str(j) + '.pgm')
                     A[:,(i-1)*8+(j-1)] = np.reshape(a,10304,1)
-                    
-                    
 
             # Algorithm NN: 
             nrPhotos = np.size(A,1)
@@ -68,7 +63,6 @@ def settings(request):
             cautat = np.zeros((10304,1))
             cautat[:,0] = np.reshape(inputPhoto,10304,1)
             
-
             for i in range(0, int(nrPhotos)):
                 distancesVector[:,i] = linear.norm(cautat[:,0]-A[:,i],1)
          
@@ -79,9 +73,6 @@ def settings(request):
             for i in range(0, np.size(distancesVector)):
                 if distancesVector[0,i] == minDistancesVector:
                     positionPhoto = i+1
-
-            pozaGasitaMatrix = np.zeros((112,92))
-            pozaGasitaMatrix = np.reshape(A[:,positionPhoto-1],(112,92))
 
 
             folderPozaGasita = int(positionPhoto/int(training)) + 1
@@ -111,7 +102,7 @@ def settings(request):
                         'im':im,
                         'imageSel':imageSel,
                         'folderSel':folderSel,
-                        'a':folderPozaGasita
+                        'a':positionPhoto
                        #min(distancesVector[0,:]) - min 
                       
                     })
